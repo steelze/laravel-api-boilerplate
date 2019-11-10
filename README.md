@@ -1,9 +1,9 @@
 ## Laravel API Boilerplate Laravel 6
 
-Laravel API Boilerplate is a starter kit you can use to build your API ontop. This project is built on Laravel 6!
+Laravel API Boilerplate is a starter kit you can use to build your API ontop.
 
-It is built on top of three big guys:
 
+## Packages
 * JWT Auth - [tymondesigns/jwt-auth](https://github.com/tymondesigns/jwt-auth)
 * Laravel CORS [barryvdh/laravel-cors](http://github.com/barryvdh/laravel-cors)
 
