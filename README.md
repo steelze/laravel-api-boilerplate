@@ -81,7 +81,7 @@ This project uses _barryvdh/laravel-cors_ package, to handle CORS easily. Read <
 
 ## Testing
   ```
-  $ php vendor/bin/phpunit
+  $ vendor/bin/phpunit
   ```
 If correctly setup, all tests should pass
 
