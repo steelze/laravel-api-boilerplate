@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Notifications\EmailVerificationNotification;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -62,90 +63,18 @@ class VerifyEmailTest extends TestCase
     }
 
     // /**
-    //  * A user cannot reset password without token
+    //  * User can verify email
     //  *
     //  * @return void
     //  * @test
     //  */
-    // public function user_cannot_resend_verification_without_token()
+    // public function user_can_verify_email()
     // {
-    //     $response = $this->postJson($this->resend_verification);
-    //     $response
-    //         ->assertStatus(422)
-    //         ->assertJsonValidationErrors(['token']);
-    // }
-
-    // /**
-    //  * A user cannot reset password without password
-    //  *
-    //  * @return void
-    //  * @test
-    //  */
-    // public function user_cannot_resend_verification_without_password()
-    // {
-    //     $response = $this->postJson($this->resend_verification);
-    //     $response
-    //         ->assertStatus(422)
-    //         ->assertJsonValidationErrors(['password']);
-    // }
-
-    // /**
-    //  * A user cannot reset password with incorrect password match
-    //  *
-    //  * @return void
-    //  * @test
-    //  */
-    // public function user_cannot_resend_verification_with_incorrect_password_match()
-    // {
-    //     $response = $this->postJson($this->resend_verification, ['password' => 'password', 'password_confirmation' => 'drowssap']);
-    //     $response
-    //         ->assertStatus(422)
-    //         ->assertJsonValidationErrors(['password']);
-    // }
-
-    // /**
-    //  * A user cannot reset password with invalid email
-    //  *
-    //  * @return void
-    //  * @test
-    //  */
-    // public function user_cannot_resend_verification_with_invalid_email()
-    // {
-    //     $token = Password::createToken($this->user);
-    //     $response = $this->postJson($this->resend_verification, ['email' => 'invalid@app.com', 'token' => $token, 'password' => 'password', 'password_confirmation' => 'password']);
-    //     $response
-    //         ->assertStatus(422)
-    //         ->assertJson(['message' => true]);
-    // }
-
-    // /**
-    //  * A user cannot reset password with invalid token
-    //  *
-    //  * @return void
-    //  * @test
-    //  */
-    // public function user_cannot_resend_verification_with_invalid_token()
-    // {
-    //     $token = Password::createToken($this->user);
-    //     $response = $this->postJson($this->resend_verification, ['email' => 'admin@blog.com', 'token' => Str::random(64), 'password' => 'password', 'password_confirmation' => 'password']);
-    //     $response
-    //         ->assertStatus(422)
-    //         ->assertJson(['message' => true]);
-    // }
-
-    // /**
-    //  * A user can reset password
-    //  *
-    //  * @return void
-    //  * @test
-    //  */
-    // public function user_can_resend_verification()
-    // {
-    //     $token = Password::createToken($this->user);
-    //     $response = $this->postJson($this->resend_verification, ['email' => 'admin@blog.com', 'token' => $token, 'password' => 'password', 'password_confirmation' => 'password']);
-    //     $response
-    //         ->assertOk()
-    //         ->assertJson(['message' => true]);
-    //     $this->assertTrue(Hash::check('password', $this->user->fresh()->password));
+    //     Notification::fake();
+    //     $notification = new EmailVerificationNotification();
+    //     $uri = str_ireplace('http://localhost', '', $notification->verificationUrl($this->user));
+    //     $response = $this->followingRedirects()
+    //         ->get($uri);
+    //         // ->assertStatus(200);
     // }
 }
