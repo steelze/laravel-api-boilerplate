@@ -2,10 +2,11 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Auth\Events\Registered;
+use App\Notifications\EmailVerificationNotification;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
@@ -20,12 +21,12 @@ class RegisterTest extends TestCase
      * @test
      * @return void
      */
-    public function it_will_not_register_a_user_with_no_data_passed()
+    public function user_cannot_register_without_data()
     {
         $response = $this->postJson($this->register_url);
         $response
-            ->assertStatus(422);
-        $response->assertJsonValidationErrors(['name', 'email', 'password']);
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['name', 'email', 'password']);
     }
 
     /**
@@ -34,13 +35,13 @@ class RegisterTest extends TestCase
      * @test
      * @return void
      */
-    public function it_will_not_register_a_user_with_empty_name_passed()
+    public function user_cannot_register_with_empty_name()
     {
         $response = $this->postJson($this->register_url, ['name' => '', 'email' => 'user@app.com', 'password' => '12345678', 'password_confirmation' => '12345678', ]);
-        $response
-            ->assertStatus(422);
-        $response->assertJsonValidationErrors(['name']);
-        $response->assertJsonMissingValidationErrors(['email', 'password']);
+       $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['name'])
+            ->assertJsonMissingValidationErrors(['email', 'password']);
     }
 
     /**
@@ -49,13 +50,13 @@ class RegisterTest extends TestCase
      * @test
      * @return void
      */
-    public function it_will_not_register_a_user_with_empty_email_passed()
+    public function user_cannot_register_with_empty_email()
     {
         $response = $this->postJson($this->register_url, ['name' => 'Jeffery Way', 'email' => '', 'password' => '12345678', 'password_confirmation' => '12345678', ]);
         $response
-            ->assertStatus(422);
-        $response->assertJsonValidationErrors(['email']);
-        $response->assertJsonMissingValidationErrors(['name', 'password']);
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['email'])
+            ->assertJsonMissingValidationErrors(['name', 'password']);
     }
 
     /**
@@ -64,13 +65,13 @@ class RegisterTest extends TestCase
      * @test
      * @return void
      */
-    public function it_will_not_register_a_user_with_empty_password_passed()
+    public function user_cannot_register_with_empty_password()
     {
         $response = $this->postJson($this->register_url, ['name' => 'Jeffery Way', 'email' => 'user@app.com', 'password' => '',]);
         $response
-            ->assertStatus(422);
-        $response->assertJsonValidationErrors(['password']);
-        $response->assertJsonMissingValidationErrors(['name', 'email']);
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['password'])
+            ->assertJsonMissingValidationErrors(['name', 'email']);
     }
 
     /**
@@ -79,13 +80,13 @@ class RegisterTest extends TestCase
      * @test
      * @return void
      */
-    public function it_will_not_register_a_user_with_incorrect_password_match()
+    public function user_cannot_register_with_incorrect_password_match()
     {
         $response = $this->postJson($this->register_url, ['name' => 'Jeffery Way', 'email' => 'user@app.com', 'password' => '12345678', 'password_confirmation' => '87654321', ]);
         $response
-            ->assertStatus(422);
-        $response->assertJsonValidationErrors(['password']);
-        $response->assertJsonMissingValidationErrors(['name', 'email']);
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['password'])
+            ->assertJsonMissingValidationErrors(['name', 'email']);
     }
 
     /**
@@ -94,11 +95,12 @@ class RegisterTest extends TestCase
      * @test
      * @return void
      */
-    public function it_will_register_a_user_with_correct_data()
+    public function user_can_register()
     {
-        Event::fake();
+        Notification::fake();
         $response = $this->postJson($this->register_url, ['name' => 'Jeffery Way', 'email' => 'user@app.com', 'password' => '12345678', 'password_confirmation' => '12345678', ]);
         $response->assertCreated();
-        Event::assertDispatched(Registered::class);
+        $user = User::where('email', 'user@app.com')->first();
+        Notification::assertSentTo($user, EmailVerificationNotification::class);
     }
 }

@@ -66,4 +66,6 @@ class EmailVerificationNotification extends VerifyEmail
             //
         ];
     }
+
+
 }

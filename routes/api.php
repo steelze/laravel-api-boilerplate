@@ -29,3 +29,4 @@ Route::namespace('Auth')->group(function () {
     Route::get('email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify');
     Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
 });
+Route::put('user', 'UserController@update');
