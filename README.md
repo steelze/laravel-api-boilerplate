@@ -23,6 +23,7 @@ Method | Route | Description
 `POST` | `/api/password/reset` | Reset user password
 `POST` | `/api/logout` | Logout authenticated user
 `POST` | `/api/email/resend` | Resend verification email
+`PUT` | `/api/user` | Update my profile
 
 ## Setup
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.

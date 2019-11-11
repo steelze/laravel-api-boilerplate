@@ -67,5 +67,7 @@ class EmailVerificationNotification extends VerifyEmail
         ];
     }
 
-
+    public function verificationUrl($notifiable) {
+        return parent::verificationUrl($notifiable);
+    }
 }
